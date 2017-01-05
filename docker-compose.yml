@@ -1,0 +1,31 @@
+# db_dat:
+#   image: busybox
+#   volumes:
+#     - /var/lib/mysql
+db_mysql:
+  image: mysql:5.6
+  environment:
+    MYSQL_DATABASE     : appdb
+    MYSQL_ROOT_PASSWORD: mysql_root_pass
+    MYSQL_USER         : mysql_user
+    MYSQL_PASSWORD     : mysql_pass
+  # volumes_from:
+  #   - db_dat
+  volumes:
+    - "./mysql-dat:/etc/mysql/conf.d"
+    - "./db:/var/lib/mysql"
+
+node:
+  build      : "./nodejs"
+  working_dir: "/app"
+  domainname : node-mysql.dev
+  ports      :
+    - "80:3000"
+  links:
+    - db_mysql
+  volumes:
+    - "./app:/app"
+  command: "nodemon app.js"
+     #{ raw: { executable: 'node', args: [ '--debug', 'server.js' ] },
+     #string: 'node --debug server.js' } }
+

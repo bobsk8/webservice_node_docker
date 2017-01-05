@@ -1,0 +1,18 @@
+<% include ../header %>
+<h1>Posts</h1>
+<ul>
+  <% for (post of posts) { %>
+  <li>
+    <a href="/posts/<%= post.id %>"><%= post.title %></a>
+    <a href="/posts/<%= post.id %>/edit"> [Edit]</a>
+    <form method="post" action="/posts/<%= post.id %>?_method=delete">
+      <input type="submit" value="Delete">
+      <input type="hidden" name="id" value="<%= post.id %>">
+    </form>
+  </li>
+  <% } %>
+</ul>
+<p>
+  <a href="/posts/new">Add New</a>
+</p>
+<% include ../footer %>
